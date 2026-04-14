@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "BlinkAI - Instant Summarizer",
+  "version": "1.0.0",
+  "description": "⚡ Select text anywhere to get instant AI summaries powered by Gemini",
+  
+  "permissions": [
+    "scripting",
+    "activeTab"
+  ],
+  
+  "host_permissions": [
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
