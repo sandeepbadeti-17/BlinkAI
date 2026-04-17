@@ -1,6 +1,6 @@
 // background.js - Fixed Gemini API endpoint with proper async handling
 
-const API_KEY = "YOUR_API KEY"; // Store here, NOT in messages
+const API_KEY = "AIzaSyD5gbVrxB3ed_xDerljMFJl0bjw36wFdkU"; // Store here, NOT in messages
 // const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 // const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent";
@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse({ farewell: "goodbye" });
     return;
   }
-
+ 
   if (message.type === "BLINK_SUMMARY") {
     // Handle async response properly
     handleBlink(message.payload)
@@ -48,7 +48,7 @@ async function handleBlink(text) {
           {
             parts: [
               {
-                text: `Explain this text in a simple, easy-to-understand way (like explaining to a 10-year-old):\n\n${text}`
+                text: `${text}`
               }
             ]
           }
