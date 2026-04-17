@@ -1,6 +1,7 @@
 // background.js - Fixed Gemini API endpoint with proper async handling
 
-const API_KEY = "YOUR_API_KEY"; // Store here, NOT in messages
+const API_KEY = "YOUR API";  // don't expose this
+ 
 // const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 // const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent";
