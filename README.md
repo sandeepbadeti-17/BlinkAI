@@ -1,84 +1,99 @@
-# ⚡ BlinkAI — Instant AI on Text Selection
+# ⚡ BlinkAI — Instant AI on Any Text
 
-BlinkAI is a Chrome extension that lets you **instantly understand any text on the web**.
-
-👉 Select text → Click ⚡ Blink → Get a quick explanation
-
----
-
-## ✨ Features
-
-* ⚡ Instant summary / explanation
-* 🎯 Works on any website
-* 🧠 Optimized for short, clear answers
-* 🚫 No copy-paste, no tab switching
+BlinkAI is a Chrome extension that brings AI directly to your reading flow.
+Select any text on any page — summarize, explain, simplify, or ask anything about it — without switching tabs or breaking focus.
 
 ---
 
-## 🧩 How It Works
+## ✨ What It Does
 
-```text
-Select text → Blink icon appears ⚡
-Click → Popup opens
-→ AI generates summary → Displayed instantly
-```
+- **⚡ Blink** — floating badge appears on text selection, click to pick a preset action
+- **📖 Explain / Summarize / Key points ** — 3 predefined prompt presets
+- **💬 Custom prompt** — type your own instruction directly in the toolbar
+- **🔁 Follow-up chat** — continue the conversation in the output panel without losing context
+- **🔀 Model switcher** — switch between Gemini models on the fly
+- **📧 Email support** — works on Gmail, Outlook, and any web-based email client
+- **🖱️ Draggable panels** — move the toolbar and output panel anywhere on screen
+- **🔒 Output persists** — the response panel stays open while you scroll or interact with the page
 
 ---
 
 ## 🏗️ Tech Stack
 
-* JavaScript (Vanilla)
-* Chrome Extension APIs
-* Google Gemini API
+- Vanilla JavaScript (no framework — migration to Vite + React planned)
+- Chrome Extension Manifest V3
+- Google Gemini API
 
 ---
 
-## 🌐 API Used
+## 🌐 Models
 
-Model:
+| Model | Use |
+|---|---|
+| `gemini-3-flash-preview` | Default — fast, capable |
+| `gemini-3.1-flash-lite-preview` | Lighter, lower latency |
 
-```text
-gemini-3-flash-preview
+Both are free-tier preview models. Switchable from the toolbar without reloading.
+
+Endpoints:
+```
+https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
+https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent
 ```
 
-Endpoint:
+---
 
-```text
-https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent
+## 🧩 How It Works
+
+```
+Select text (3–500 words)
+  → Toolbar appears with ⚡Blink badge
+  → Pick a preset or type a custom prompt
+  → Output panel opens with AI response
+  → Continue chatting in the same panel
+  → Switch models if you hit an error
+
+## 📁 File Structure
+
+```
+blinkai/
+├── manifest.json       # Extension config, permissions, content scripts
+├── background.js       # Service worker — Gemini API calls
+├── content.js          # UI injection — toolbar, output panel, drag, chat
+
 ```
 
 ---
 
 ## ⚠️ Challenges Solved
 
-* ❌ CORS issues → ✅ Fixed using background.js
-* ❌ API integration errors → ✅ Correct model + endpoint
-* ❌ UX friction → ✅ Floating action UI
+| Problem | Solution |
+|---|---|
+| CORS on API calls from content scripts | All fetch calls moved to `background.js` service worker |
+| Text selection lost on popup open | Selection captured on `mouseup` before any UI renders |
+| Output panel closing on page interaction | `stopPropagation` on panel + separate lifecycle from toolbar |
+| Style bleed from host page CSS | Scoped class names + explicit inline resets on all elements |
+| Model errors hard to recover from | Error bubbles show inline "Switch model and retry" hint |
 
 ---
 
 ## 🚀 Setup
 
 1. Clone the repo
-2. Go to `chrome://extensions`
-3. Enable Developer Mode
-4. Click "Load Unpacked"
-5. Add your API key in `background.js`
+2. Open `chrome://extensions`
+3. Enable **Developer Mode**
+4. Click **Load Unpacked** → select the project folder
+5. Add your Gemini API key in `background.js`
 
 ---
 
-## 🔮 Future Plans
+## 🔮 Planned
 
-* Multiple modes (Explain / Translate / Simplify)
-* Better UI animations
-* Backend for secure API handling
-
----
-
-## 💡 Idea
-
-> BlinkAI is a **speed layer for the internet** — helping users understand content instantly without breaking focus.
+- Migrate to **Vite + React** with shadow DOM style isolation
+- Output UI redesign — markdown rendering, copy button, source highlight
+- Backend proxy for secure API key handling
+- Rate limit UI with daily usage tracker
 
 ---
 
-⚡ *Blink it. Understand instantly.*
+> ⚡ *BlinkAI is a speed layer for reading the internet — understand anything, instantly, without breaking your flow.*
