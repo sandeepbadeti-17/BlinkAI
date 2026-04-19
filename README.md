@@ -46,7 +46,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-pr
 ## 🧩 How It Works
 
 ```
-Select text (3–500 words)
+Select text (1–500 words)
   → Toolbar appears with ⚡Blink badge
   → Pick a preset or type a custom prompt
   → Output panel opens with AI response
