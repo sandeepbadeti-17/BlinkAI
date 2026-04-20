@@ -16,7 +16,7 @@ BlinkAI solves that by bringing AI directly into the page you’re reading.
 
 ## What It Does
 
-* Select text (1-500 words) on any webpage, email, or PDF
+* Select text (1-500 words) on any webpage, email
 * Floating toolbar appears instantly
 * Run quick actions or type your own prompt
 * Continue follow-up chat in the same panel
