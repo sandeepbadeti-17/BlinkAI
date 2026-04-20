@@ -1,4 +1,4 @@
-// content.js — BlinkAI v3
+// content.js - BlinkAI v3
 console.log("✅ BlinkAI content script loaded");
 
 chrome.runtime.sendMessage({ greeting: "hello" }, (response) => {
@@ -129,7 +129,7 @@ function injectStyles() {
     .bk-preset-item:hover { background: rgba(255,195,40,0.1); color: #FFD700; }
     .bk-preset-icon { width: 16px; text-align: center; flex-shrink: 0; color: rgba(255,195,40,0.55); font-size: 12px; }
 
-    /* Input row — borderless */
+    /* Input row - borderless */
     #bk-input-row {
       display: flex;
       align-items: flex-end;
@@ -328,7 +328,7 @@ function injectStyles() {
     .bk-dot:nth-child(2) { animation-delay: 0.18s; }
     .bk-dot:nth-child(3) { animation-delay: 0.36s; }
 
-    /* Footer — borderless input */
+    /* Footer - borderless input */
     #bk-footer {
       border-top: 1px solid rgba(255,255,255,0.06);
       padding: 8px 10px 9px;
@@ -563,7 +563,8 @@ function destroyOutput() {
 }
 
 // ─── Messages ─────────────────────────────────────────────────────────────────
-function addMessage(role, text, isError = false) {
+function addMessage(role, text, isError = false, response) {
+  console.log(response)
   const wrap = document.createElement("div");
   wrap.className = "bk-msg bk-" + role;
 
@@ -636,7 +637,7 @@ function doRequest(customPrompt, prefix) {
         ? "❌ " + (chrome.runtime.lastError?.message || response?.error || "No response.")
         : (response.summary || "⚠️ Empty response");
       if (!isErr) conversationHistory.push({ role: "assistant", content: text });
-      addMessage("ai", text, isErr);
+      addMessage("ai", text, isErr, response);
     }
   );
 }
@@ -667,7 +668,7 @@ function doFollowUp(chatInput, sendBtn) {
         ? "❌ " + (chrome.runtime.lastError?.message || response?.error || "No response.")
         : (response.summary || "⚠️ Empty response");
       if (!isErr) conversationHistory.push({ role: "assistant", content: aiText });
-      addMessage("ai", aiText, isErr);
+      addMessage("ai", aiText, isErr, response);
     }
   );
 }
@@ -708,7 +709,7 @@ document.addEventListener("mouseup", (e) => {
       (outputPanel && outputPanel.contains(e.target))) return;
   const sel = window.getSelection().toString().trim();
   const wc  = countWords(sel);
-  if (sel && wc >= 3 && wc <= 500) {
+  if (sel && wc >= 1 && wc <= 500) {
     currentSelection = sel;
     showToolbar(e.clientX + 12, e.clientY + 14);
   } else {
@@ -731,4 +732,4 @@ window.addEventListener("beforeunload", () => {
   if (outputPanel) outputPanel.remove();
 });
 
-console.log("✅ BlinkAI v3 ready — select text to start");
+console.log("✅ BlinkAI v3 ready - select text to start");
