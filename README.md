@@ -14,6 +14,13 @@ BlinkAI solves that by bringing AI directly into the page you’re reading.
 
 ---
 
+## 🎥 Demo
+
+
+https://github.com/user-attachments/assets/d981783b-cc23-403c-b4d0-ebd8eb95934b
+
+---
+
 ## What It Does
 
 * Select text (1-500 words) on any webpage, email
