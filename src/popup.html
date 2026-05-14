@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 300px;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .logo { font-size: 18px; color: #ffc328; }
+
+    .title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .version {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      margin-left: auto;
+      font-weight: 500;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+
+    .section { margin-bottom: 16px; }
+
+    /* API Key */
+    .api-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1a1a;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 10px;
+      transition: border-color 0.15s;
+    }
+    .api-input-wrap:focus-within {
+      border-color: rgba(255,195,40,0.4);
+    }
+
+    .api-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f0f0f0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      min-width: 0;
+    }
+    .api-input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.35);
+      padding: 2px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: color 0.15s;
+      font-size: 13px;
+      line-height: 1;
+    }
+    .icon-btn:hover { color: rgba(255,255,255,0.8); }
+    .icon-btn.danger:hover { color: #ff6b6b; }
+
+    .save-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 9px;
+      background: #ffc328;
+      border: none;
+      border-radius: 8px;
+      color: #0d0d0d;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .save-btn:hover { opacity: 0.85; }
+    .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .status {
+      font-size: 11px;
+      margin-top: 6px;
+      min-height: 16px;
+      transition: color 0.2s;
+    }
+    .status.ok { color: #5dca8a; }
+    .status.err { color: #ff7070; }
+
+    /* Model switcher */
+    .model-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .model-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .model-item:hover {
+      background: #1a1a1a;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .model-item.selected {
+      background: rgba(255,195,40,0.08);
+      border-color: rgba(255,195,40,0.25);
+    }
+
+    .model-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      flex-shrink: 0;
+      transition: background 0.12s;
+    }
+    .model-item.selected .model-dot { background: #ffc328; }
+
+    .model-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      flex: 1;
+    }
+    .model-item.selected .model-name { color: #f0f0f0; }
+
+    .model-tag {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: rgba(255,195,40,0.12);
+      color: rgba(255,195,40,0.7);
+      display: none;
+    }
+    .model-item.selected .model-tag { display: block; }
+
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 4px 0 16px;
+    }
+
+    .key-saved-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #5dca8a;
+      margin-bottom: 8px;
+    }
+    .key-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #5dca8a;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="logo">⚡</span>
+    <span class="title">BlinkAI</span>
+    <span class="version">v2.0</span>
+  </div>
+
+  <!-- API Key section -->
+  <div class="section">
+    <div class="section-label">Gemini API Key</div>
+    <div id="key-saved-indicator" class="key-saved-indicator" style="display:none">
+      <div class="key-dot"></div>
+      Key saved — extension is active
+    </div>
+    <div class="api-input-wrap">
+      <input
+        type="password"
+        id="api-key-input"
+        class="api-input"
+        placeholder="AIza..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="icon-btn" id="toggle-visibility" title="Show/hide key">👁</button>
+      <button class="icon-btn danger" id="delete-key" title="Delete key">✕</button>
+    </div>
+    <button class="save-btn" id="save-btn">Save Key</button>
+    <div class="status" id="status-msg"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Model switcher -->
+  <div class="section">
+    <div class="section-label">Model</div>
+    <div class="model-list" id="model-list"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
