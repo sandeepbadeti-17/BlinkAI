@@ -38,12 +38,12 @@
   border: 1px solid var(--bk-border2);
   border-radius: var(--bk-radius);
   box-shadow: var(--bk-shadow);
-  padding: 8px;
-  width: 300px;
+  padding: 10px;
+  width: 380px;
   font-family: var(--bk-font);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   animation: bk-slide-in 0.15s ease;
 }
 
@@ -52,32 +52,7 @@
   to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
-/* Badge */
-.bk-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px 4px 6px;
-  background: var(--bk-surface2);
-  border: 1px solid var(--bk-border2);
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--bk-text);
-  cursor: pointer;
-  user-select: none;
-  width: fit-content;
-  letter-spacing: 0.02em;
-  transition: background 0.15s;
-}
-.bk-badge:hover { background: #2a2a2a; }
-
-.bk-badge-icon {
-  font-size: 13px;
-  color: var(--bk-accent);
-}
-
-/* Input row */
+/* Input row — textarea expands vertically, no scroll */
 .bk-input-row {
   display: flex;
   align-items: flex-end;
@@ -99,11 +74,11 @@
   outline: none;
   color: var(--bk-text);
   font-family: var(--bk-font);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
   resize: none;
-  max-height: 120px;
-  overflow-y: auto;
+  overflow-y: hidden; /* no scroll — grows instead */
+  min-height: 20px;
 }
 .bk-prompt-input::placeholder { color: var(--bk-muted); }
 
@@ -123,17 +98,25 @@
 .bk-toolbar-send:hover,
 .bk-toolbar-send.active { color: var(--bk-accent); }
 
-/* Bottom bar */
-.bk-bottom-bar {
+/* Bottom bar: presets on left, model pill on right */
+.bk-toolbar-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   position: relative;
 }
 
 .bk-quick-actions {
   display: flex;
   gap: 4px;
+  flex-shrink: 0;   /* never squeeze the chips */
+}
+
+/* Wrapper anchors the model dropdown */
+.bk-model-pill-wrap {
+  position: relative;
+  flex-shrink: 0;
 }
 
 .bk-quick-btn {
@@ -142,7 +125,7 @@
   border-radius: 20px;
   color: var(--bk-muted);
   font-family: var(--bk-font);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   padding: 3px 8px;
   cursor: pointer;
@@ -166,7 +149,7 @@
   border-radius: 20px;
   cursor: pointer;
   font-family: var(--bk-font);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--bk-muted);
   user-select: none;
   transition: all 0.15s;
@@ -176,47 +159,9 @@
   color: rgba(255,255,255,0.65);
 }
 
-.bk-model-label { font-weight: 500; }
-
-/* Preset menu */
-.bk-preset-menu {
-  background: var(--bk-surface);
-  border: 1px solid var(--bk-border2);
-  border-radius: var(--bk-radius-sm);
-  overflow: hidden;
-  box-shadow: var(--bk-shadow);
-  animation: bk-fade-in 0.12s ease;
-}
-
-@keyframes bk-fade-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0);    }
-}
-
-.bk-preset-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  font-family: var(--bk-font);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--bk-text);
-  cursor: pointer;
-  transition: background 0.1s;
-}
-.bk-preset-item:hover { background: var(--bk-surface2); }
-.bk-preset-icon {
-  font-size: 11px;
-  color: var(--bk-accent);
-  width: 14px;
-}
-
-/* Model menu */
+/* Model menu — opens upward when anchored at bottom */
 .bk-model-menu {
   position: absolute;
-  bottom: calc(100% + 4px);
-  right: 0;
   background: var(--bk-surface);
   border: 1px solid var(--bk-border2);
   border-radius: var(--bk-radius-sm);
@@ -227,20 +172,32 @@
   animation: bk-fade-in 0.12s ease;
 }
 
+/* Opens upward from model pill wrap */
+.bk-model-menu--up {
+  bottom: calc(100% + 6px);
+  right: 0;
+  left: auto;
+}
+
+@keyframes bk-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
 .bk-model-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
   font-family: var(--bk-font);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--bk-muted);
   cursor: pointer;
   transition: background 0.1s, color 0.1s;
 }
 .bk-model-item:hover { background: var(--bk-surface2); color: var(--bk-text); }
 .bk-model-item.active { color: var(--bk-accent); }
-.bk-model-check { font-size: 11px; color: var(--bk-accent); }
+.bk-model-check { font-size: 12px; color: var(--bk-accent); }
 
 /* ── Output Panel ─────────────────────────────────────────────────── */
 #bk-output {
@@ -257,6 +214,13 @@
   font-family: var(--bk-font);
   animation: bk-slide-in 0.2s ease;
   overflow: hidden;
+  /* No width/height transitions — JS resize handles sizing directly */
+}
+
+/* Expanded state */
+#bk-output.bk-expanded {
+  width: 560px;
+  max-height: 80vh;
 }
 
 #bk-out-header {
@@ -272,20 +236,20 @@
 #bk-out-header:active { cursor: grabbing; }
 
 #bk-out-logo {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--bk-accent);
   line-height: 1;
 }
 
 #bk-out-title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--bk-text);
   letter-spacing: 0.02em;
 }
 
 #bk-out-model-tag {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--bk-muted);
   background: var(--bk-surface2);
@@ -296,12 +260,32 @@
   letter-spacing: 0.02em;
 }
 
-#bk-out-close {
+/* Expand/collapse button */
+#bk-out-expand {
   background: transparent;
   border: none;
   cursor: pointer;
   color: var(--bk-muted2);
   font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+}
+#bk-out-expand:hover {
+  color: var(--bk-text);
+  background: var(--bk-surface2);
+}
+
+#bk-out-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--bk-muted2);
+  font-size: 15px;
   padding: 2px 4px;
   border-radius: 4px;
   line-height: 1;
@@ -337,7 +321,7 @@
 }
 
 .bk-msg-label {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -345,7 +329,7 @@
 }
 
 .bk-bubble {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--bk-text);
   padding: 10px 12px;
@@ -377,7 +361,7 @@
 .bk-switch-hint {
   display: inline-block;
   margin-top: 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--bk-accent);
   cursor: pointer;
   text-decoration: underline;
@@ -419,6 +403,7 @@
   flex-shrink: 0;
 }
 
+/* Chat input grows vertically, no scroll */
 #bk-chat-input {
   flex: 1;
   background: var(--bk-surface);
@@ -426,13 +411,13 @@
   border-radius: var(--bk-radius-sm);
   color: var(--bk-text);
   font-family: var(--bk-font);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
   padding: 7px 10px;
   resize: none;
   outline: none;
-  max-height: 100px;
-  overflow-y: auto;
+  overflow-y: hidden; /* grows instead of scrolls */
+  min-height: 36px;
   transition: border-color 0.15s;
 }
 #bk-chat-input:focus {
@@ -456,10 +441,7 @@
 #bk-send-btn:hover { opacity: 0.88; transform: scale(1.05); }
 #bk-send-btn.bk-busy { opacity: 0.4; cursor: not-allowed; }
 
-.bk-quick-icon {
-  font-size: 10px;
-  opacity: 0.7;
-}
+/* ── Mini pill ────────────────────────────────────────────────────── */
 .bk-mini-pill {
   position: fixed;
   z-index: 2147483647;
@@ -491,7 +473,7 @@
 
 .bk-pill-instant {
   padding: 6px 10px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--bk-accent);
 }
 .bk-pill-instant:hover { background: rgba(255,195,40,0.1); }
@@ -505,7 +487,7 @@
 
 .bk-pill-ask {
   padding: 6px 11px;
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(255,255,255,0.7);
   letter-spacing: 0.04em;
 }
@@ -514,7 +496,7 @@
   color: #fff;
 }
 
-/* ── Toolbar top row ──────────────────────────────────────────────── */
+/* ── Toolbar top/bottom rows ──────────────────────────────────────── */
 .bk-toolbar-top {
   display: flex;
   align-items: center;
@@ -526,7 +508,7 @@
 .bk-streaming-cursor {
   display: inline-block;
   width: 2px;
-  height: 13px;
+  height: 14px;
   background: var(--bk-accent);
   margin-left: 2px;
   vertical-align: middle;
@@ -541,3 +523,232 @@
 .bk-bubble.streaming {
   white-space: pre-wrap;
 }
+
+.bk-quick-icon {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Preset menu (unused but kept for compat) */
+.bk-preset-menu {
+  background: var(--bk-surface);
+  border: 1px solid var(--bk-border2);
+  border-radius: var(--bk-radius-sm);
+  overflow: hidden;
+  box-shadow: var(--bk-shadow);
+  animation: bk-fade-in 0.12s ease;
+}
+
+.bk-preset-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-family: var(--bk-font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bk-text);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.bk-preset-item:hover { background: var(--bk-surface2); }
+.bk-preset-icon {
+  font-size: 12px;
+  color: var(--bk-accent);
+  width: 14px;
+}
+
+/* Badge (kept for compat) */
+.bk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px 4px 6px;
+  background: var(--bk-surface2);
+  border: 1px solid var(--bk-border2);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bk-text);
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  letter-spacing: 0.02em;
+  transition: background 0.15s;
+}
+.bk-badge:hover { background: #2a2a2a; }
+.bk-badge-icon { font-size: 14px; color: var(--bk-accent); }
+
+/* ── Toolbar drag handle ─────────────────────────────────────────── */
+.bk-toolbar-drag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 12px;
+  cursor: grab;
+  opacity: 0.35;
+  transition: opacity 0.15s;
+  margin-bottom: 2px;
+}
+.bk-toolbar-drag:active { cursor: grabbing; }
+.bk-toolbar-drag:hover  { opacity: 0.65; }
+.bk-toolbar-drag-dots {
+  width: 24px;
+  height: 4px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px);
+  background-size: 6px 4px;
+  background-repeat: repeat-x;
+}
+
+/* ── Toolbar bottom bar fix — presets left, model right ─────────── */
+.bk-toolbar-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  position: relative;
+}
+
+.bk-quick-actions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  flex: 1;
+}
+
+.bk-quick-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.55);
+  font-family: var(--bk-font);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.bk-quick-btn:hover {
+  background: var(--bk-accent-dim);
+  border-color: rgba(255,195,40,0.25);
+  color: var(--bk-accent);
+}
+
+/* Model pill wrapper — right-anchored, dropdown opens upward */
+.bk-model-pill-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.bk-model-menu--up {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  z-index: 999;
+}
+
+/* ── OutputPanel resize handles ──────────────────────────────────── */
+#bk-output {
+  /* Remove fixed max-height — size is now controlled by JS */
+  max-height: none !important;
+  min-width: 320px;
+  min-height: 300px;
+  overflow: hidden;
+  will-change: width, height, left, top;
+}
+
+.bk-resize {
+  position: absolute;
+  z-index: 10;
+}
+.bk-resize-n  { top: 0;    left: 4px;  right: 4px;  height: 4px; cursor: n-resize;  }
+.bk-resize-s  { bottom: 0; left: 4px;  right: 4px;  height: 4px; cursor: s-resize;  }
+.bk-resize-e  { top: 4px;  right: 0;   bottom: 4px; width: 4px;  cursor: e-resize;  }
+.bk-resize-w  { top: 4px;  left: 0;    bottom: 4px; width: 4px;  cursor: w-resize;  }
+.bk-resize-ne { top: 0;    right: 0;   width: 8px;  height: 8px; cursor: ne-resize; }
+.bk-resize-nw { top: 0;    left: 0;    width: 8px;  height: 8px; cursor: nw-resize; }
+.bk-resize-se { bottom: 0; right: 0;   width: 12px; height: 12px;cursor: se-resize; }
+.bk-resize-sw { bottom: 0; left: 0;    width: 8px;  height: 8px; cursor: sw-resize; }
+
+/* SE corner visual grip */
+.bk-resize-grip {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  pointer-events: none;
+  z-index: 11;
+  opacity: 0.5;
+}
+
+/* ── Remove old expand button styles (no longer used) ────────────── */
+#bk-out-expand { display: none; }
+
+/* ── Footer model switcher ─────────────────────────────────────────── */
+#bk-footer-model {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#bk-model-toggle {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  color: rgba(255,195,40,0.8);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--bk-font);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  transition: all 0.15s;
+}
+#bk-model-toggle-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#bk-model-toggle:hover {
+  background: rgba(255,195,40,0.08);
+  border-color: rgba(255,195,40,0.3);
+  color: rgba(255,195,40,0.9);
+}
+
+#bk-footer-model-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 170px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  z-index: 10;
+  animation: bk-fade-in 0.12s ease;
+}
+
+.bk-fmenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  font-family: var(--bk-font);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.bk-fmenu-item:hover  { background: rgba(255,255,255,0.05); color: #f0f0f0; }
+.bk-fmenu-item.active { color: var(--bk-accent); }
+.bk-fmenu-check { font-size: 11px; color: var(--bk-accent); }

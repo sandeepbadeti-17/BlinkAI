@@ -1,45 +1,51 @@
-// src/content.jsx
-// This is the Chrome content script entry point.
-// We mount React into a Shadow DOM to isolate styles from the host page.
+// src/content.jsx — Chrome content script
+// Mounts React into a Shadow DOM for style isolation.
+// Designed to be idempotent — safe to call multiple times (PDF re-injection).
 
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import styles from "./styles/blinkai.css?inline";
 
 (function initBlinkAI() {
-  console.log("✅ BlinkAI content script loaded");
+  // Idempotency guard — background may inject us a second time on PDF tabs
+  if (document.getElementById("blinkai-root")) return;
 
-  // Verify background is ready
   chrome.runtime.sendMessage({ greeting: "hello" }, (response) => {
     if (chrome.runtime.lastError) {
-      console.error("❌ Background:", chrome.runtime.lastError);
-    } else {
-      console.log("✅ Background ready:", response);
+      console.error("❌ BlinkAI background:", chrome.runtime.lastError);
     }
   });
 
-  // Create a host element
-  const host = document.createElement("div");
-  host.id = "blinkai-root";
-  host.style.cssText = "all: initial; position: fixed; z-index: 2147483647; pointer-events: none;";
-  document.body.appendChild(host);
+  function mount() {
+    if (document.getElementById("blinkai-root")) return;
 
-  // Attach shadow root for style isolation
-  const shadow = host.attachShadow({ mode: "open" });
+    const target = document.body || document.documentElement;
+    if (!target) return;
 
-  // Inject styles into Shadow DOM
-  const styleEl = document.createElement("style");
-  styleEl.textContent = styles;
-  shadow.appendChild(styleEl);
+    const host = document.createElement("div");
+    host.id = "blinkai-root";
+    host.style.cssText =
+      "all:initial;position:fixed;z-index:2147483647;pointer-events:none;";
+    target.appendChild(host);
 
-  // Mount React into shadow root
-  const mountPoint = document.createElement("div");
-  mountPoint.id = "blinkai-mount";
-  mountPoint.style.cssText = "pointer-events: auto;";
-  shadow.appendChild(mountPoint);
+    const shadow  = host.attachShadow({ mode: "open" });
+    const styleEl = document.createElement("style");
+    styleEl.textContent = styles;
+    shadow.appendChild(styleEl);
 
-  const root = createRoot(mountPoint);
-  root.render(<App />);
+    const mountPoint = document.createElement("div");
+    mountPoint.id = "blinkai-mount";
+    mountPoint.style.cssText = "pointer-events:auto;";
+    shadow.appendChild(mountPoint);
 
-  console.log("✅ BlinkAI v2 ready — select text to start");
+    createRoot(mountPoint).render(<App />);
+    console.log("✅ BlinkAI ready");
+  }
+
+  // Mount immediately if body exists, otherwise wait for DOM
+  if (document.body) {
+    mount();
+  } else {
+    document.addEventListener("DOMContentLoaded", mount, { once: true });
+  }
 })();

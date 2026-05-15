@@ -3,65 +3,121 @@
 <head>
   <meta charset="UTF-8" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      width: 300px;
+      width: 268px;
+      min-width: 240px;
+      resize: horizontal;
+      overflow: auto;
       background: #0d0d0d;
       color: #f0f0f0;
       font-family: 'DM Sans', system-ui, sans-serif;
-      padding: 16px;
+      padding: 20px 18px 18px;
+      user-select: none;
+      border-radius: 5px;
+      overflow: hidden;
     }
 
+    /* ── Header ── */
     .header {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
       margin-bottom: 20px;
     }
+    .brand { display: flex; align-items: center; gap: 7px; }
+    .brand-logo { font-size: 17px; color: #ffc328; }
+    .brand-name { font-size: 15px; font-weight: 700; letter-spacing: 0.04em; }
+    .version { font-size: 11px; color: rgba(255,255,255,0.25); font-weight: 500; }
 
-    .logo { font-size: 18px; color: #ffc328; }
+    /* ── Power button ── */
+    .power-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 0 22px;
+    }
 
-    .title {
-      font-size: 15px;
+    .power-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      outline: none;
+    }
+
+    .power-btn.off {
+      background: transparent;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .power-btn.off:hover {
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.1);
+      transform: scale(1.05);
+    }
+    .power-btn.off svg { opacity: 0.3; }
+
+    .power-btn.on {
+      background: #ffc328;
+      box-shadow: 0 0 24px rgba(255,195,40,0.45), 0 0 8px rgba(255,195,40,0.3), 0 0 0 2px rgba(255,195,40,0.2);
+    }
+    .power-btn.on:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 32px rgba(255,195,40,0.6), 0 0 12px rgba(255,195,40,0.4), 0 0 0 2px rgba(255,195,40,0.3);
+    }
+    .power-btn.on svg { opacity: 1; }
+    .power-btn:active { transform: scale(0.97) !important; }
+
+    .power-label {
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .power-label.on  { color: #ffc328; }
+    .power-label.off { color: rgba(255,255,255,0.3); }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 2px 0 16px;
     }
 
-    .version {
-      font-size: 10px;
-      color: rgba(255,255,255,0.35);
-      margin-left: auto;
-      font-weight: 500;
-    }
-
+    /* ── Section label ── */
     .section-label {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 8px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 10px;
     }
 
-    .section { margin-bottom: 16px; }
+    /* No key state */
+    #no-key-view { display: flex; flex-direction: column; gap: 8px; }
 
-    /* API Key */
     .api-input-wrap {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: #1a1a1a;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
+      background: #161616;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 5px;
       padding: 8px 10px;
       transition: border-color 0.15s;
     }
-    .api-input-wrap:focus-within {
-      border-color: rgba(255,195,40,0.4);
-    }
+    .api-input-wrap:focus-within { border-color: rgba(255,195,40,0.4); }
 
     .api-input {
       flex: 1;
@@ -70,16 +126,17 @@
       outline: none;
       color: #f0f0f0;
       font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
+      font-size: 13px;
       min-width: 0;
+      letter-spacing: 0.03em;
     }
-    .api-input::placeholder { color: rgba(255,255,255,0.3); }
+    .api-input::placeholder { color: rgba(255,255,255,0.25); }
 
     .icon-btn {
       background: transparent;
       border: none;
       cursor: pointer;
-      color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.3);
       padding: 2px;
       border-radius: 4px;
       display: flex;
@@ -90,151 +147,270 @@
       font-size: 13px;
       line-height: 1;
     }
-    .icon-btn:hover { color: rgba(255,255,255,0.8); }
-    .icon-btn.danger:hover { color: #ff6b6b; }
+    .icon-btn:hover { color: rgba(255,255,255,0.75); }
 
     .save-btn {
       width: 100%;
-      margin-top: 8px;
       padding: 9px;
       background: #ffc328;
       border: none;
-      border-radius: 8px;
+      border-radius: 5px;
       color: #0d0d0d;
       font-family: 'DM Sans', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      transition: opacity 0.15s;
-      letter-spacing: 0.02em;
+      transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: 0.03em;
     }
-    .save-btn:hover { opacity: 0.85; }
-    .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .save-btn:hover { opacity: 0.88; }
+    .save-btn:active { transform: scale(0.98); }
 
-    .status {
-      font-size: 11px;
-      margin-top: 6px;
-      min-height: 16px;
-      transition: color 0.2s;
-    }
-    .status.ok { color: #5dca8a; }
-    .status.err { color: #ff7070; }
+    /* Has key state */
+    #has-key-view { display: none; flex-direction: column; gap: 8px; }
 
-    /* Model switcher */
-    .model-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .model-item {
+    .key-status {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       padding: 9px 11px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: all 0.12s;
-    }
-    .model-item:hover {
-      background: #1a1a1a;
-      border-color: rgba(255,255,255,0.08);
-    }
-    .model-item.selected {
-      background: rgba(255,195,40,0.08);
-      border-color: rgba(255,195,40,0.25);
-    }
-
-    .model-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      flex-shrink: 0;
-      transition: background 0.12s;
-    }
-    .model-item.selected .model-dot { background: #ffc328; }
-
-    .model-name {
-      font-size: 12px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.6);
-      flex: 1;
-    }
-    .model-item.selected .model-name { color: #f0f0f0; }
-
-    .model-tag {
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 10px;
-      background: rgba(255,195,40,0.12);
-      color: rgba(255,195,40,0.7);
-      display: none;
-    }
-    .model-item.selected .model-tag { display: block; }
-
-    .divider {
-      height: 1px;
-      background: rgba(255,255,255,0.06);
-      margin: 4px 0 16px;
-    }
-
-    .key-saved-indicator {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: #5dca8a;
-      margin-bottom: 8px;
+      background: rgba(93,202,138,0.07);
+      border: 1px solid rgba(93,202,138,0.18);
+      border-radius: 5px;
     }
     .key-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
       background: #5dca8a;
       flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(93,202,138,0.6);
+    }
+    .key-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      flex: 1;
+    }
+
+    .key-actions { display: flex; gap: 6px; }
+
+    .key-action-btn {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 5px;
+      background: #161616;
+      color: rgba(255,255,255,0.55);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+    .key-action-btn:hover {
+      background: #1e1e1e;
+      color: #f0f0f0;
+      border-color: rgba(255,255,255,0.15);
+    }
+    .key-action-btn.danger:hover {
+      background: rgba(255,80,80,0.08);
+      color: #ff7070;
+      border-color: rgba(255,80,80,0.2);
+    }
+
+    /* Cancel btn (shown when editing) */
+    .cancel-btn {
+      width: 100%;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 5px;
+      color: rgba(255,255,255,0.4);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+    .cancel-btn:hover {
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.7);
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    /* Get API key link */
+    .get-api-link {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,195,40,0.75);
+      text-decoration: none;
+      text-align: center;
+      padding: 3px 0;
+      transition: color 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .get-api-link:hover {
+      color: #ffc328;
+      text-decoration: underline;
+    }
+
+    /* Status msg */
+    .status {
+      font-size: 12px;
+      min-height: 15px;
+      text-align: center;
+      transition: color 0.2s;
+    }
+    .status.ok  { color: #5dca8a; }
+    .status.err { color: #ff7070; }
+
+    /* ── Divider ── */
+    .divider-sm {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin: 14px 0 14px;
+    }
+
+    /* ── Model switcher ── */
+    .model-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .model-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.35);
+      flex-shrink: 0;
+    }
+
+    .model-select-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .model-select {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #161616;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 5px;
+      color: rgba(255,195,40,0.85);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 28px 7px 10px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .model-select:hover   { border-color: rgba(255,195,40,0.3); }
+    .model-select:focus   { border-color: rgba(255,195,40,0.45); }
+    .model-select option  { background: #1a1a1a; color: #f0f0f0; }
+
+    /* Custom chevron */
+    .model-select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid rgba(255,195,40,0.6);
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- Header -->
   <div class="header">
-    <span class="logo">⚡</span>
-    <span class="title">BlinkAI</span>
+    <div class="brand">
+      <span class="brand-logo">⚡</span>
+      <span class="brand-name">BlinkAI</span>
+    </div>
     <span class="version">v2.0</span>
   </div>
 
+  <!-- Power toggle -->
+  <div class="power-section">
+    <button class="power-btn off" id="power-btn" title="Toggle BlinkAI">
+      <svg id="icon-off" width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 4V14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M9 7.2A9 9 0 1 0 19 7.2" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <svg id="icon-on" width="26" height="26" viewBox="0 0 24 24" fill="none" style="display:none">
+        <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" fill="#0d0d0d" stroke="#0d0d0d" stroke-width="1" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="power-label off" id="power-label">OFF</span>
+  </div>
+
+  <div class="divider"></div>
+
   <!-- API Key section -->
-  <div class="section">
-    <div class="section-label">Gemini API Key</div>
-    <div id="key-saved-indicator" class="key-saved-indicator" style="display:none">
-      <div class="key-dot"></div>
-      Key saved — extension is active
-    </div>
+  <div class="section-label">API Key</div>
+
+  <!-- No key / editing view -->
+  <div id="no-key-view">
     <div class="api-input-wrap">
       <input
         type="password"
         id="api-key-input"
         class="api-input"
-        placeholder="AIza..."
+        placeholder="Enter your Gemini API key…"
         autocomplete="off"
         spellcheck="false"
       />
-      <button class="icon-btn" id="toggle-visibility" title="Show/hide key">👁</button>
-      <button class="icon-btn danger" id="delete-key" title="Delete key">✕</button>
+      <button class="icon-btn" id="toggle-visibility" title="Show / hide">👁</button>
     </div>
+    <a
+      href="https://aistudio.google.com/app/apikey"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="get-api-link"
+    >✨ Click here to get your free Gemini API key</a>
     <button class="save-btn" id="save-btn">Save Key</button>
+    <!-- Cancel only shown when editing an existing key -->
+    <button class="cancel-btn" id="cancel-edit-btn" style="display:none">Cancel</button>
     <div class="status" id="status-msg"></div>
   </div>
 
-  <div class="divider"></div>
+  <!-- Has key view -->
+  <div id="has-key-view">
+    <div class="key-status">
+      <div class="key-dot"></div>
+      <span class="key-label">API key saved</span>
+    </div>
+    <div class="key-actions">
+      <button class="key-action-btn" id="edit-btn">Edit Key</button>
+      <button class="key-action-btn danger" id="delete-btn">Delete</button>
+    </div>
+    <div class="status" id="status-msg-2"></div>
+  </div>
+
+  <div class="divider-sm"></div>
 
   <!-- Model switcher -->
-  <div class="section">
-    <div class="section-label">Model</div>
-    <div class="model-list" id="model-list"></div>
+  <div class="model-row">
+    <span class="model-section-label">Model</span>
+    <div class="model-select-wrap">
+      <select class="model-select" id="model-select">
+        <option value="gemini-3-flash-preview" selected>Gemini 3 Flash</option>
+        <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite</option>
+      </select>
+    </div>
   </div>
 
   <script src="popup.js"></script>

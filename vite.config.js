@@ -7,12 +7,10 @@ function copyStaticFiles() {
   return {
     name: "copy-static",
     closeBundle() {
-      // manifest.json
       fs.copyFileSync(
         resolve(__dirname, "public/manifest.json"),
         resolve(__dirname, "dist/manifest.json")
       );
-      // popup files (vanilla JS, no bundling needed)
       fs.copyFileSync(
         resolve(__dirname, "src/popup.html"),
         resolve(__dirname, "dist/popup.html")
@@ -21,7 +19,14 @@ function copyStaticFiles() {
         resolve(__dirname, "src/popup.js"),
         resolve(__dirname, "dist/popup.js")
       );
-      console.log("📄 Copied manifest + popup files to dist/");
+      // Copy icons folder
+      const iconsDir = resolve(__dirname, "public/icons");
+      const distIconsDir = resolve(__dirname, "dist/icons");
+      if (!fs.existsSync(distIconsDir)) fs.mkdirSync(distIconsDir, { recursive: true });
+      for (const f of fs.readdirSync(iconsDir)) {
+        fs.copyFileSync(resolve(iconsDir, f), resolve(distIconsDir, f));
+      }
+      console.log("📄 Copied manifest + popup + icons to dist/");
     },
   };
 }
