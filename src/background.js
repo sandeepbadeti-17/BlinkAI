@@ -3,10 +3,10 @@
 const MODEL_URLS = {
   "gemini-3-flash-preview":
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent",
-  "gemini-3.1-flash-lite-preview":
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent",
+  "gemini-3.1-flash-lite":
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
 };
-const DEFAULT_MODEL = "gemini-3-flash-preview";
+const DEFAULT_MODEL = "gemini-3.1-flash-lite";
 
 // ── Message router ─────────────────────────────────────────────────────────────
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

@@ -56,7 +56,7 @@ Perfect for:
 BlinkAI currently uses the Gemini API:
 
 - `gemini-3-flash-preview`
-- `gemini-3.1-flash-lite-preview`
+- `gemini-3.1-flash-lite` (default)
 
 Models can be switched instantly from the extension UI.
 

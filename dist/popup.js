@@ -28,7 +28,7 @@ chrome.storage.local.get(["apiKey", "blinkEnabled", "selectedModel"], (data) => 
   isEnabled = data.blinkEnabled !== false;
   renderPower();
   renderKeyView();
-  renderModelSelection(data.selectedModel || "gemini-3-flash-preview");
+  renderModelSelection(data.selectedModel || "gemini-3.1-flash-lite");
 });
 
 // ── Power toggle ──────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ deleteBtn.addEventListener("click", () => {
 
 // ── Model selection ───────────────────────────────────────────────────────────
 function renderModelSelection(selectedId) {
-  modelSelect.value = selectedId || "gemini-3-flash-preview";
+  modelSelect.value = selectedId || "gemini-3.1-flash-lite";
 }
 
 modelSelect.addEventListener("change", () => {

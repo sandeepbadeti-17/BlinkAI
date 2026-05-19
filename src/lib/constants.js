@@ -1,13 +1,13 @@
 // src/lib/constants.js
 
 export const MODELS = [
-  { id: "gemini-3-flash-preview",        label: "Gemini 3 Flash"         },
-  { id: "gemini-3.1-flash-lite-preview", label: "Gemini 3.1 Flash Lite"  },
+  { id: "gemini-3-flash-preview",  label: "Gemini 3 Flash"         },
+  { id: "gemini-3.1-flash-lite",   label: "Gemini 3.1 Flash Lite"  },
 ];
 
 export const MODEL_URLS = {
-  "gemini-3-flash-preview":        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent",
-  "gemini-3.1-flash-lite-preview": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent",
+  "gemini-3-flash-preview":  "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent",
+  "gemini-3.1-flash-lite":   "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
 };
 
 export const PRESETS = [

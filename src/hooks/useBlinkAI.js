@@ -12,16 +12,19 @@ export function useBlinkAI() {
   // Store the model index that should be used for next retry
   const pendingRetryModel   = useRef(null);
 
-  // Load persisted model on mount — default to index 0 (Gemini 3 Flash)
+  // Load persisted model on mount — default to Gemini 3.1 Flash Lite
   useState(() => {
     chrome.storage.local.get("selectedModel", (data) => {
       if (data.selectedModel) {
         const idx = MODELS.findIndex((m) => m.id === data.selectedModel);
         if (idx !== -1) setActiveModelIdx(idx);
       }
-      // If nothing stored yet, persist the default
+      // If nothing stored yet, persist the new default (gemini-3.1-flash-lite)
       else {
-        chrome.storage.local.set({ selectedModel: MODELS[0].id });
+        const defaultModelId = "gemini-3.1-flash-lite";
+        chrome.storage.local.set({ selectedModel: defaultModelId });
+        const idx = MODELS.findIndex((m) => m.id === defaultModelId);
+        if (idx !== -1) setActiveModelIdx(idx);
       }
     });
   });
